@@ -1,0 +1,37 @@
+{
+  "exclusion_rules": [
+    { "keywords": ["payment thank you", "online payment", "automatic payment", "autopay", "bill pay"], "reason": "Credit card payment" },
+    { "keywords": ["transfer", "zelle", "venmo", "cashapp", "cash app"], "reason": "Transfer" },
+    { "keywords": ["cash advance", "cash withdrawal"], "reason": "Cash advance" },
+    { "keywords": ["atm withdrawal", "atm"], "reason": "ATM withdrawal" }
+  ],
+  "category_rules": [
+    { "category": "Groceries", "keywords": ["walmart", "target", "kroger", "safeway", "whole foods", "trader joe", "aldi", "costco", "publix", "heb", "wegmans", "grocery", "supermarket", "food lion", "stop & shop", "giant", "meijer", "sprouts", "market basket"] },
+    { "category": "Dining", "keywords": ["restaurant", "mcdonald", "starbucks", "chipotle", "chick-fil-a", "taco bell", "wendy", "burger king", "dunkin", "panera", "subway", "domino", "pizza hut", "olive garden", "applebee", "chili", "ihop", "denny", "waffle house", "grubhub", "doordash", "uber eats", "postmates", "cafe", "bistro", "grill", "diner", "sushi", "thai", "chinese", "mexican", "italian"] },
+    { "category": "Drugstores", "keywords": ["cvs", "walgreens", "rite aid", "pharmacy", "drugstore"] },
+    { "category": "Streaming", "keywords": ["netflix", "hulu", "disney+", "disney plus", "hbo max", "paramount+", "peacock", "apple tv", "spotify", "amazon prime video", "youtube premium", "crunchyroll"] },
+    { "category": "Entertainment", "keywords": ["amc theatre", "regal cinema", "cinemark", "fandango", "ticketmaster", "live nation", "stubhub", "bowling", "arcade", "concert", "museum", "zoo", "theme park", "six flags", "disney park"] },
+    { "category": "Airfare", "keywords": ["american airlines", "delta", "united airlines", "southwest", "jetblue", "spirit airlines", "frontier airlines", "alaska airlines", "airline", "airways"] },
+    { "category": "Travel", "keywords": ["marriott", "hilton", "hyatt", "airbnb", "vrbo", "hotel", "motel", "resort", "hertz", "enterprise", "avis", "national car", "budget rent", "lyft", "uber", "taxi", "parking"] },
+    { "category": "Gas", "keywords": ["shell", "exxon", "chevron", "bp gas", "speedway", "wawa", "sheetz", "circle k", "gas station", "fuel", "sunoco", "marathon gas", "valero"] },
+    { "category": "Shopping", "keywords": ["amazon", "ebay", "etsy", "best buy", "apple store", "nike", "nordstrom", "macys", "kohls", "tj maxx", "marshalls", "ross", "home depot", "lowes", "ikea", "wayfair"] },
+    { "category": "Bills & Utilities", "keywords": ["electric", "gas bill", "water bill", "internet", "comcast", "xfinity", "att", "t-mobile", "verizon", "sprint", "utility", "insurance", "geico", "state farm", "progressive", "rent", "mortgage"] },
+    { "category": "Health", "keywords": ["doctor", "hospital", "clinic", "dental", "dentist", "optometrist", "vision", "medical", "lab corp", "quest diagnostic", "urgent care", "physical therapy"] }
+  ],
+  "app_to_card_category": {
+    "Groceries": "groceries",
+    "Dining": "dining",
+    "Drugstores": "drugstores",
+    "Streaming": "streaming",
+    "Entertainment": "entertainment",
+    "Airfare": "airfare",
+    "Travel": "travel",
+    "Gas": "all_other",
+    "Shopping": "all_other",
+    "Bills & Utilities": "all_other",
+    "Health": "all_other",
+    "Other": "all_other",
+    "Transfer/Payment": "excluded",
+    "Unknown": "all_other"
+  }
+}

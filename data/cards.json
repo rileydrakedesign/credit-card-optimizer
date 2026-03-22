@@ -1,0 +1,172 @@
+{
+    "as_of_date": "2026-01-14",
+    "notes": {
+      "scope": "Core earn rates + annual fees + major caps/activation rules. Welcome offers, statement credits, and perk valuations intentionally excluded as high-volatility.",
+      "reward_value_assumptions": "Not included. This file is intended for earn-rate simulation only."
+    },
+    "cards": [
+      {
+        "id": "chase_freedom_unlimited",
+        "name": "Chase Freedom Unlimited",
+        "issuer": "Chase",
+        "network": "Visa",
+        "reward_currency": "cash_back_or_ultimate_rewards",
+        "annual_fee_usd": 0,
+        "activation_required": false,
+        "earn_rules": [
+          { "category": "travel_portal", "subcategory": "chase_travel", "multiplier": 5, "unit": "percent_or_points_per_dollar", "cap": null, "notes": "5% cash back (or 5x points) on travel purchased through Chase Travel." },
+          { "category": "dining", "multiplier": 3, "unit": "percent_or_points_per_dollar", "cap": null, "notes": "Includes takeout and eligible delivery." },
+          { "category": "drugstores", "multiplier": 3, "unit": "percent_or_points_per_dollar", "cap": null },
+          { "category": "all_other", "multiplier": 1.5, "unit": "percent_or_points_per_dollar", "cap": null }
+        ],
+        "source_urls": ["https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited"],
+        "last_verified_date": "2026-01-14"
+      },
+      {
+        "id": "chase_freedom_flex",
+        "name": "Chase Freedom Flex",
+        "issuer": "Chase",
+        "network": "Mastercard",
+        "reward_currency": "cash_back_or_ultimate_rewards",
+        "annual_fee_usd": 0,
+        "activation_required": true,
+        "earn_rules": [
+          { "category": "rotating_bonus_categories", "multiplier": 5, "unit": "percent_or_points_per_dollar", "cap": { "amount_usd": 1500, "period": "quarterly", "applies_to": "combined_bonus_category_spend" }, "notes": "Quarterly categories require activation; then earn 5% on up to $1,500 combined purchases per quarter." },
+          { "category": "travel_portal", "subcategory": "chase_travel", "multiplier": 5, "unit": "percent_or_points_per_dollar", "cap": null },
+          { "category": "dining", "multiplier": 3, "unit": "percent_or_points_per_dollar", "cap": null, "notes": "Includes takeout and eligible delivery." },
+          { "category": "drugstores", "multiplier": 3, "unit": "percent_or_points_per_dollar", "cap": null },
+          { "category": "all_other", "multiplier": 1, "unit": "percent_or_points_per_dollar", "cap": null }
+        ],
+        "source_urls": ["https://creditcards.chase.com/cash-back-credit-cards/freedom/flex"],
+        "last_verified_date": "2026-01-14"
+      },
+      {
+        "id": "discover_it_cash_back",
+        "name": "Discover it Cash Back",
+        "issuer": "Discover",
+        "network": "Discover",
+        "reward_currency": "cash_back",
+        "annual_fee_usd": 0,
+        "activation_required": true,
+        "earn_rules": [
+          { "category": "rotating_bonus_categories", "multiplier": 5, "unit": "percent_cash_back", "cap": { "amount_usd": 1500, "period": "quarterly", "applies_to": "combined_bonus_category_spend" }, "notes": "Quarterly categories require activation; earn 5% on up to $1,500 per quarter." },
+          { "category": "all_other", "multiplier": 1, "unit": "percent_cash_back", "cap": null }
+        ],
+        "source_urls": ["https://www.discover.com/credit-cards/cash-back/it-card.html"],
+        "last_verified_date": "2026-01-14"
+      },
+      {
+        "id": "amex_gold",
+        "name": "American Express Gold Card",
+        "issuer": "American Express",
+        "network": "Amex",
+        "reward_currency": "membership_rewards_points",
+        "annual_fee_usd": 325,
+        "activation_required": false,
+        "earn_rules": [
+          { "category": "dining", "multiplier": 4, "unit": "points_per_dollar", "cap": { "amount_usd": 50000, "period": "annual", "applies_to": "restaurants_worldwide" }, "notes": "Restaurants worldwide; then 1x." },
+          { "category": "groceries", "subcategory": "us_supermarkets", "multiplier": 4, "unit": "points_per_dollar", "cap": { "amount_usd": 25000, "period": "annual", "applies_to": "u_s_supermarkets" }, "notes": "U.S. supermarkets up to $25,000 per calendar year; then 1x." },
+          { "category": "airfare", "multiplier": 3, "unit": "points_per_dollar", "cap": null, "notes": "Flights booked directly with airlines or on AmexTravel.com." },
+          { "category": "travel_portal", "subcategory": "amex_travel_prepaid_hotels", "multiplier": 2, "unit": "points_per_dollar", "cap": null },
+          { "category": "all_other", "multiplier": 1, "unit": "points_per_dollar", "cap": null }
+        ],
+        "source_urls": ["https://www.americanexpress.com/us/credit-cards/card/gold-card/"],
+        "last_verified_date": "2026-01-14"
+      },
+      {
+        "id": "citi_custom_cash",
+        "name": "Citi Custom Cash Card",
+        "issuer": "Citi",
+        "network": "Mastercard",
+        "reward_currency": "thankyou_points_redeemable_for_cash",
+        "annual_fee_usd": 0,
+        "activation_required": false,
+        "earn_rules": [
+          { "category": "top_eligible_category_each_billing_cycle", "multiplier": 5, "unit": "percent_or_points_per_dollar", "cap": { "amount_usd": 500, "period": "billing_cycle", "applies_to": "top_eligible_spend_category" }, "notes": "Earn 5% on top eligible spend category each billing cycle up to $500; then 1%." },
+          { "category": "all_other", "multiplier": 1, "unit": "percent_or_points_per_dollar", "cap": null }
+        ],
+        "source_urls": ["https://www.citi.com/credit-cards/citi-custom-cash-credit-card"],
+        "last_verified_date": "2026-01-14"
+      },
+      {
+        "id": "citi_double_cash",
+        "name": "Citi Double Cash Card",
+        "issuer": "Citi",
+        "network": "Mastercard",
+        "reward_currency": "thankyou_points_redeemable_for_cash",
+        "annual_fee_usd": 0,
+        "activation_required": false,
+        "earn_rules": [
+          { "category": "all_purchases", "multiplier": 2, "unit": "percent_or_points_per_dollar", "cap": null, "notes": "Earn 1% when you buy + 1% as you pay." }
+        ],
+        "source_urls": ["https://www.citi.com/credit-cards/citi-double-cash-credit-card"],
+        "last_verified_date": "2026-01-14"
+      },
+      {
+        "id": "wells_fargo_active_cash",
+        "name": "Wells Fargo Active Cash Card",
+        "issuer": "Wells Fargo",
+        "network": "Visa",
+        "reward_currency": "cash_rewards",
+        "annual_fee_usd": 0,
+        "activation_required": false,
+        "earn_rules": [
+          { "category": "all_purchases", "multiplier": 2, "unit": "percent_cash_back", "cap": null, "notes": "Unlimited 2% cash rewards on purchases." }
+        ],
+        "source_urls": ["https://creditcards.wellsfargo.com/active-cash-credit-card/"],
+        "last_verified_date": "2026-01-14"
+      },
+      {
+        "id": "chase_sapphire_preferred",
+        "name": "Chase Sapphire Preferred",
+        "issuer": "Chase",
+        "network": "Visa",
+        "reward_currency": "ultimate_rewards_points",
+        "annual_fee_usd": 95,
+        "activation_required": false,
+        "earn_rules": [
+          { "category": "travel_portal", "subcategory": "chase_travel", "multiplier": 5, "unit": "points_per_dollar", "cap": null },
+          { "category": "dining", "multiplier": 3, "unit": "points_per_dollar", "cap": null },
+          { "category": "travel", "subcategory": "other_travel", "multiplier": 2, "unit": "points_per_dollar", "cap": null },
+          { "category": "all_other", "multiplier": 1, "unit": "points_per_dollar", "cap": null }
+        ],
+        "source_urls": ["https://creditcards.chase.com/rewards-credit-cards/sapphire/preferred"],
+        "last_verified_date": "2026-01-14"
+      },
+      {
+        "id": "capital_one_venture_x",
+        "name": "Capital One Venture X Rewards Credit Card",
+        "issuer": "Capital One",
+        "network": "Visa",
+        "reward_currency": "miles",
+        "annual_fee_usd": 395,
+        "activation_required": false,
+        "earn_rules": [
+          { "category": "travel_portal", "subcategory": "capital_one_travel_hotels_and_rental_cars", "multiplier": 10, "unit": "miles_per_dollar", "cap": null },
+          { "category": "travel_portal", "subcategory": "capital_one_travel_flights", "multiplier": 5, "unit": "miles_per_dollar", "cap": null },
+          { "category": "all_other", "multiplier": 2, "unit": "miles_per_dollar", "cap": null }
+        ],
+        "source_urls": ["https://www.capitalone.com/credit-cards/venture-x/"],
+        "last_verified_date": "2026-01-14"
+      },
+      {
+        "id": "capital_one_savor",
+        "name": "Capital One Savor Rewards",
+        "issuer": "Capital One",
+        "network": "Mastercard",
+        "reward_currency": "cash_back",
+        "annual_fee_usd": 0,
+        "activation_required": false,
+        "earn_rules": [
+          { "category": "travel_portal", "subcategory": "capital_one_travel_hotels_vacation_rentals_rental_cars", "multiplier": 5, "unit": "percent_cash_back", "cap": null },
+          { "category": "dining", "multiplier": 3, "unit": "percent_cash_back", "cap": null },
+          { "category": "groceries", "multiplier": 3, "unit": "percent_cash_back", "cap": null },
+          { "category": "entertainment", "multiplier": 3, "unit": "percent_cash_back", "cap": null },
+          { "category": "streaming", "multiplier": 3, "unit": "percent_cash_back", "cap": null, "notes": "Popular streaming services per issuer wording." },
+          { "category": "all_other", "multiplier": 1, "unit": "percent_cash_back", "cap": null }
+        ],
+        "source_urls": ["https://www.capitalone.com/credit-cards/savor/"],
+        "last_verified_date": "2026-01-14"
+      }
+    ]
+  }
