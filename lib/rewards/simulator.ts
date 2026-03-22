@@ -68,7 +68,7 @@ export function simulateCard(
   const capUsage: Record<string, number> = {};
   let totalUnits = 0;
   let totalCashBack = 0;
-  const breakdownMap: Record<string, { units: number; spend: number }> = {};
+  const breakdownMap: Record<string, { units: number; cashBack: number; spend: number }> = {};
   const capsHit: string[] = [];
 
   // Check for special earn rule types
@@ -119,7 +119,7 @@ export function simulateCard(
           const reward = computeReward(eligible, topRule.multiplier, topRule.unit, card.reward_currency);
           totalUnits += reward.units;
           totalCashBack += reward.cashBack;
-          addBreakdown(breakdownMap, txn.card_category, reward.units, eligible);
+          addBreakdown(breakdownMap, txn.card_category, reward.units, reward.cashBack, eligible);
 
           const overflow = txn.amount_usd - eligible;
           if (overflow > 0) {
@@ -130,7 +130,7 @@ export function simulateCard(
               const fbReward = computeReward(overflow, fallbackRule.multiplier, fallbackRule.unit, card.reward_currency);
               totalUnits += fbReward.units;
               totalCashBack += fbReward.cashBack;
-              addBreakdown(breakdownMap, 'all_other', fbReward.units, overflow);
+              addBreakdown(breakdownMap, 'all_other', fbReward.units, fbReward.cashBack, overflow);
             }
           }
           continue;
@@ -145,7 +145,7 @@ export function simulateCard(
         const reward = computeReward(txn.amount_usd, rule.multiplier, rule.unit, card.reward_currency);
         totalUnits += reward.units;
         totalCashBack += reward.cashBack;
-        addBreakdown(breakdownMap, txn.card_category, reward.units, txn.amount_usd);
+        addBreakdown(breakdownMap, txn.card_category, reward.units, reward.cashBack, txn.amount_usd);
       }
     }
   } else {
@@ -176,7 +176,7 @@ export function simulateCard(
             const reward = computeReward(spend, fb.multiplier, fb.unit, card.reward_currency);
             totalUnits += reward.units;
             totalCashBack += reward.cashBack;
-            addBreakdown(breakdownMap, txn.card_category, reward.units, spend);
+            addBreakdown(breakdownMap, txn.card_category, reward.units, reward.cashBack, spend);
           }
           continue;
         }
@@ -192,7 +192,7 @@ export function simulateCard(
         const reward = computeReward(eligible, rule.multiplier, rule.unit, card.reward_currency);
         totalUnits += reward.units;
         totalCashBack += reward.cashBack;
-        addBreakdown(breakdownMap, txn.card_category, reward.units, eligible);
+        addBreakdown(breakdownMap, txn.card_category, reward.units, reward.cashBack, eligible);
 
         const overflow = spend - eligible;
         if (overflow > 0) {
@@ -201,7 +201,7 @@ export function simulateCard(
             const fbReward = computeReward(overflow, fb.multiplier, fb.unit, card.reward_currency);
             totalUnits += fbReward.units;
             totalCashBack += fbReward.cashBack;
-            addBreakdown(breakdownMap, 'all_other', fbReward.units, overflow);
+            addBreakdown(breakdownMap, 'all_other', fbReward.units, fbReward.cashBack, overflow);
           }
         }
         continue;
@@ -210,7 +210,7 @@ export function simulateCard(
       const reward = computeReward(spend, rule.multiplier, rule.unit, card.reward_currency);
       totalUnits += reward.units;
       totalCashBack += reward.cashBack;
-      addBreakdown(breakdownMap, txn.card_category, reward.units, spend);
+      addBreakdown(breakdownMap, txn.card_category, reward.units, reward.cashBack, spend);
     }
   }
 
@@ -225,8 +225,8 @@ export function simulateCard(
   const isMiles = isMilesCurrency(card.reward_currency);
 
   const breakdown: CategoryBreakdown[] = Object.entries(breakdownMap)
-    .map(([category, data]) => ({ category, units: Math.round(data.units * 100) / 100, spend: Math.round(data.spend * 100) / 100 }))
-    .sort((a, b) => b.units - a.units || b.spend - a.spend);
+    .map(([category, data]) => ({ category, units: Math.round(data.units * 100) / 100, cashBack: Math.round(data.cashBack * 100) / 100, spend: Math.round(data.spend * 100) / 100 }))
+    .sort((a, b) => (b.cashBack || b.units) - (a.cashBack || a.units) || b.spend - a.spend);
 
   return {
     card,
@@ -244,9 +244,10 @@ export function simulateCard(
   };
 }
 
-function addBreakdown(map: Record<string, { units: number; spend: number }>, category: string, units: number, spend: number) {
-  if (!map[category]) map[category] = { units: 0, spend: 0 };
+function addBreakdown(map: Record<string, { units: number; cashBack: number; spend: number }>, category: string, units: number, cashBack: number, spend: number) {
+  if (!map[category]) map[category] = { units: 0, cashBack: 0, spend: 0 };
   map[category].units += units;
+  map[category].cashBack += cashBack;
   map[category].spend += spend;
 }
 

@@ -93,6 +93,7 @@ export interface CardsData {
 export interface CategoryBreakdown {
   category: string;
   units: number;
+  cashBack: number;
   spend: number;
 }
 

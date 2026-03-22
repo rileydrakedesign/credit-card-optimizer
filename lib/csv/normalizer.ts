@@ -56,8 +56,10 @@ export function parseAmount(raw: string): number {
   }
   const num = parseFloat(cleaned);
   if (isNaN(num)) return 0;
-  // Normalize: positive = spend, so flip if negative (bank statements often show debits as negative)
-  return Math.abs(num) * (num < 0 ? 1 : cleaned.startsWith('-') ? -1 : 1);
+  // Positive = spend, negative = refund/credit
+  // Bank statements often show debits as negative, so flip sign: -85.43 (purchase) → 85.43
+  if (num < 0) return Math.abs(num);
+  return num;
 }
 
 export function normalizeDate(raw: string): string | null {

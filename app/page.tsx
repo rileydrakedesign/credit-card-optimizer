@@ -83,14 +83,16 @@ export default function Home() {
   const [hasData, setHasData] = useState(false);
 
   const processTransactions = useCallback((txns: NormalizedTransaction[]) => {
-    const deduped = deduplicateTransactions([...transactions, ...txns]);
-    setTransactions(deduped);
-    const cards = loadCards();
-    const results = simulateAllCards(cards, deduped);
-    setSimResults(results);
-    setHasData(true);
-    setUploadOpen(false);
-  }, [transactions]);
+    setTransactions(prev => {
+      const deduped = deduplicateTransactions([...prev, ...txns]);
+      const cards = loadCards();
+      const results = simulateAllCards(cards, deduped);
+      setSimResults(results);
+      setHasData(true);
+      setUploadOpen(false);
+      return deduped;
+    });
+  }, []);
 
   const handleFilesProcessed = useCallback((txns: NormalizedTransaction[]) => {
     processTransactions(txns);

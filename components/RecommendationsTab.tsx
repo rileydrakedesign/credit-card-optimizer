@@ -137,7 +137,7 @@ function CardResult({ result, rank, type }: {
           <div key={b.category} className="flex justify-between text-xs py-0.5">
             <span className="text-gray-600 dark:text-gray-400">{b.category}</span>
             <span className="font-medium">
-              {type === "cashback" ? formatCurrency(b.units || (b.spend * 0.01)) : formatNumber(b.units)}
+              {type === "cashback" ? formatCurrency(b.cashBack) : formatNumber(b.units)}
               <span className="text-gray-400 ml-1">({formatCurrency(b.spend)} spend)</span>
             </span>
           </div>
