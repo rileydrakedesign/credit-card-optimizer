@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { NormalizedTransaction, ColumnMapping, CardSimulationResult, AppCategory } from "@/lib/types";
 import { parseCSVText, autoDetectColumns } from "@/lib/csv/parser";
 import { normalizeTransactions, deduplicateTransactions } from "@/lib/csv/normalizer";
@@ -146,6 +146,13 @@ export default function Home() {
     setSimResults([]);
     setHasData(false);
   }, []);
+
+  // Auto-load sample data when ?demo=true is in the URL
+  useEffect(() => {
+    if (typeof window !== "undefined" && new URLSearchParams(window.location.search).has("demo")) {
+      handleLoadSample();
+    }
+  }, [handleLoadSample]);
 
   return (
     <>
