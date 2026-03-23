@@ -1,15 +1,14 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { NormalizedTransaction, ColumnMapping, ParsedCSV, CardSimulationResult, AppCategory } from "@/lib/types";
-import { parseCSVText, autoDetectColumns, isValidMapping } from "@/lib/csv/parser";
+import { NormalizedTransaction, ColumnMapping, CardSimulationResult, AppCategory } from "@/lib/types";
+import { parseCSVText, autoDetectColumns } from "@/lib/csv/parser";
 import { normalizeTransactions, deduplicateTransactions } from "@/lib/csv/normalizer";
 import { loadCards } from "@/lib/cards/loader";
 import { simulateAllCards } from "@/lib/rewards/simulator";
 import { getCardCategory } from "@/lib/categorize/engine";
 import PlaidLinkSection from "@/components/PlaidLinkSection";
-import InsightsSection from "@/components/InsightsSection";
-import TabsSection from "@/components/TabsSection";
+import ResultsView from "@/components/ResultsView";
 
 // Sample CSV data inline for demo mode
 const SAMPLE_CHASE = `Transaction Date,Post Date,Description,Category,Type,Amount,Memo
@@ -79,7 +78,6 @@ const SAMPLE_BOA = `Date,Description,Debit,Credit
 export default function Home() {
   const [transactions, setTransactions] = useState<NormalizedTransaction[]>([]);
   const [simResults, setSimResults] = useState<CardSimulationResult[]>([]);
-  const [uploadOpen, setUploadOpen] = useState(true);
   const [hasData, setHasData] = useState(false);
 
   const processTransactions = useCallback((txns: NormalizedTransaction[]) => {
@@ -89,7 +87,6 @@ export default function Home() {
       const results = simulateAllCards(cards, deduped);
       setSimResults(results);
       setHasData(true);
-      setUploadOpen(false);
       return deduped;
     });
   }, []);
@@ -101,7 +98,6 @@ export default function Home() {
   const handleLoadSample = useCallback(() => {
     const parsed1 = parseCSVText(SAMPLE_CHASE, "chase_checking.csv");
     const mapping1 = autoDetectColumns(parsed1.headers);
-    // Chase uses "Transaction Date" for date and "Description" for description, Amount for amount
     const fullMapping1: ColumnMapping = {
       date: mapping1.date || "Transaction Date",
       description: mapping1.description || "Description",
@@ -125,7 +121,6 @@ export default function Home() {
     const results = simulateAllCards(cards, all);
     setSimResults(results);
     setHasData(true);
-    setUploadOpen(false);
   }, []);
 
   const handleCategoryOverride = useCallback((txnId: string, newCategory: AppCategory) => {
@@ -150,36 +145,24 @@ export default function Home() {
     setTransactions([]);
     setSimResults([]);
     setHasData(false);
-    setUploadOpen(true);
   }, []);
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-8">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Credit Card Rewards Analyzer</h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">
-          Connect your bank account to find the best credit card for your spending habits
-        </p>
-      </header>
-
+    <>
       <PlaidLinkSection
-        isOpen={uploadOpen}
-        onToggle={() => setUploadOpen(!uploadOpen)}
+        hasData={hasData}
         onTransactionsLoaded={handleFilesProcessed}
         onLoadSample={handleLoadSample}
         onReset={hasData ? handleReset : undefined}
       />
 
       {hasData && (
-        <>
-          <InsightsSection transactions={transactions} />
-          <TabsSection
-            transactions={transactions}
-            simResults={simResults}
-            onCategoryOverride={handleCategoryOverride}
-          />
-        </>
+        <ResultsView
+          transactions={transactions}
+          simResults={simResults}
+          onCategoryOverride={handleCategoryOverride}
+        />
       )}
-    </main>
+    </>
   );
 }

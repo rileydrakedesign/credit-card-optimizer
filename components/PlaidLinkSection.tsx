@@ -5,8 +5,7 @@ import { usePlaidLink } from "react-plaid-link";
 import { NormalizedTransaction } from "@/lib/types";
 
 interface Props {
-  isOpen: boolean;
-  onToggle: () => void;
+  hasData: boolean;
   onTransactionsLoaded: (txns: NormalizedTransaction[]) => void;
   onLoadSample: () => void;
   onReset?: () => void;
@@ -15,8 +14,7 @@ interface Props {
 type Status = "idle" | "linking" | "loading" | "success" | "error";
 
 export default function PlaidLinkSection({
-  isOpen,
-  onToggle,
+  hasData,
   onTransactionsLoaded,
   onLoadSample,
   onReset,
@@ -27,7 +25,6 @@ export default function PlaidLinkSection({
   const [linkedInstitution, setLinkedInstitution] = useState<string | null>(null);
   const [transactionCount, setTransactionCount] = useState(0);
 
-  // Fetch link token on mount
   useEffect(() => {
     let cancelled = false;
     async function fetchToken() {
@@ -61,7 +58,6 @@ export default function PlaidLinkSection({
       setError(null);
 
       try {
-        // Exchange public token for access token
         const exchangeRes = await fetch("/api/plaid/exchange-token", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -70,8 +66,6 @@ export default function PlaidLinkSection({
         const exchangeData = await exchangeRes.json();
         if (exchangeData.error) throw new Error(exchangeData.error);
 
-        // Wait for Plaid to prepare transaction data — transactionsSync
-        // isn't immediately available after item creation (documented behavior).
         setStatus("loading");
         await new Promise(r => setTimeout(r, 3000));
 
@@ -129,96 +123,95 @@ export default function PlaidLinkSection({
     }
   }, []);
 
-  return (
-    <section className="mb-8">
-      <button
-        onClick={onToggle}
-        className="flex items-center gap-2 text-lg font-semibold mb-4 hover:text-blue-600 transition-colors"
-      >
-        <span className={`transform transition-transform ${isOpen ? "rotate-90" : ""}`}>
-          ▶
-        </span>
-        Connect Bank Account
-        {onReset && (
-          <span
-            onClick={(e) => {
-              e.stopPropagation();
-              onReset();
-            }}
-            className="ml-4 text-sm text-red-500 hover:text-red-700 font-normal"
-          >
-            Reset
+  // Compact top bar when data is loaded
+  if (hasData) {
+    return (
+      <div className="flex items-center justify-between px-6 py-4 bg-[var(--surface)] border-b border-[var(--border)]">
+        <div className="flex items-center gap-3">
+          <div className="w-2 h-2 rounded-full bg-emerald-400" />
+          <span className="text-sm text-[var(--muted)]">
+            {linkedInstitution ? `Connected to ${linkedInstitution}` : "Sample data loaded"}
+            {transactionCount > 0 && ` \u2014 ${transactionCount} transactions`}
           </span>
-        )}
-      </button>
-
-      {isOpen && (
-        <div className="space-y-4">
-          {/* Error state */}
-          {status === "error" && (
-            <div className="border border-red-300 dark:border-red-700 rounded-xl p-6 bg-red-50 dark:bg-red-950">
-              <p className="text-red-600 dark:text-red-400 font-medium mb-3">{error}</p>
-              <button
-                onClick={handleRetry}
-                className="px-4 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition-colors"
-              >
-                Try Again
-              </button>
-            </div>
-          )}
-
-          {/* Linking / Loading state */}
-          {(status === "linking" || status === "loading") && (
-            <div className="border-2 border-blue-300 dark:border-blue-700 rounded-xl p-12 text-center">
-              <div className="inline-block w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mb-4" />
-              <p className="text-lg font-medium mb-1">
-                {status === "linking"
-                  ? `Connecting to ${linkedInstitution}...`
-                  : "Fetching transactions..."}
-              </p>
-              <p className="text-sm text-gray-500">This may take a moment</p>
-            </div>
-          )}
-
-          {/* Success state */}
-          {status === "success" && (
-            <div className="border border-green-300 dark:border-green-700 rounded-xl p-6 bg-green-50 dark:bg-green-950">
-              <p className="text-green-700 dark:text-green-400 font-medium">
-                Connected to {linkedInstitution} — {transactionCount} transactions loaded
-              </p>
-            </div>
-          )}
-
-          {/* Idle state - show connect button */}
-          {status === "idle" && (
-            <>
-              <button
-                onClick={() => open()}
-                disabled={!ready}
-                className="w-full border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-colors border-gray-300 dark:border-gray-600 hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <p className="text-lg font-medium mb-2">
-                  {ready ? "Connect Your Bank Account" : "Initializing..."}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Securely link your bank via Plaid to import transactions
-                </p>
-              </button>
-
-              <div className="text-center">
-                <span className="text-gray-400 text-sm">or</span>
-              </div>
-
-              <button
-                onClick={onLoadSample}
-                className="w-full py-3 px-4 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
-              >
-                Load Sample Data
-              </button>
-            </>
-          )}
         </div>
-      )}
-    </section>
+        {onReset && (
+          <button
+            onClick={onReset}
+            className="text-sm text-[var(--muted)] hover:text-white transition-colors"
+          >
+            Start over
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  // Full-screen onboarding
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center px-6">
+      <div className="max-w-lg w-full text-center">
+        <h1 className="text-5xl font-bold tracking-tight mb-4">
+          Find your <span className="text-emerald-400">best card</span>
+        </h1>
+        <p className="text-lg text-[var(--muted)] mb-12">
+          Connect your bank to see which credit card earns the most on your actual spending.
+        </p>
+
+        {/* Error state */}
+        {status === "error" && (
+          <div className="mb-8 rounded-xl p-6 bg-red-950/50 border border-red-800">
+            <p className="text-red-400 font-medium mb-3">{error}</p>
+            <button
+              onClick={handleRetry}
+              className="px-5 py-2.5 rounded-lg bg-red-600 text-white font-medium hover:bg-red-500 transition-colors"
+            >
+              Try again
+            </button>
+          </div>
+        )}
+
+        {/* Linking / Loading state */}
+        {(status === "linking" || status === "loading") && (
+          <div className="mb-8 rounded-xl p-12 bg-[var(--surface)] border border-[var(--border)]">
+            <div className="inline-block w-8 h-8 border-4 border-emerald-400 border-t-transparent rounded-full animate-spin mb-4" />
+            <p className="text-lg font-medium mb-1">
+              {status === "linking"
+                ? `Connecting to ${linkedInstitution}...`
+                : "Pulling your transactions..."}
+            </p>
+            <p className="text-sm text-[var(--muted)]">This takes a few seconds</p>
+          </div>
+        )}
+
+        {/* Success state */}
+        {status === "success" && (
+          <div className="mb-8 rounded-xl p-6 bg-emerald-950/50 border border-emerald-800">
+            <p className="text-emerald-400 font-medium">
+              Connected to {linkedInstitution} — {transactionCount} transactions loaded
+            </p>
+          </div>
+        )}
+
+        {/* Idle state */}
+        {status === "idle" && (
+          <>
+            <button
+              onClick={() => open()}
+              disabled={!ready}
+              className="w-full py-4 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed mb-4"
+            >
+              {ready ? "Connect your bank" : "Initializing..."}
+            </button>
+
+            <button
+              onClick={onLoadSample}
+              className="text-sm text-[var(--muted)] hover:text-white transition-colors"
+            >
+              or try with sample data
+            </button>
+          </>
+        )}
+      </div>
+    </div>
   );
 }
