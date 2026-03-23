@@ -7,7 +7,7 @@ import { normalizeTransactions, deduplicateTransactions } from "@/lib/csv/normal
 import { loadCards } from "@/lib/cards/loader";
 import { simulateAllCards } from "@/lib/rewards/simulator";
 import { getCardCategory } from "@/lib/categorize/engine";
-import UploadSection from "@/components/UploadSection";
+import PlaidLinkSection from "@/components/PlaidLinkSection";
 import InsightsSection from "@/components/InsightsSection";
 import TabsSection from "@/components/TabsSection";
 
@@ -158,14 +158,14 @@ export default function Home() {
       <header className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Credit Card Rewards Analyzer</h1>
         <p className="text-gray-500 dark:text-gray-400 mt-1">
-          Upload your bank transactions to find the best credit card for your spending habits
+          Connect your bank account to find the best credit card for your spending habits
         </p>
       </header>
 
-      <UploadSection
+      <PlaidLinkSection
         isOpen={uploadOpen}
         onToggle={() => setUploadOpen(!uploadOpen)}
-        onFilesProcessed={handleFilesProcessed}
+        onTransactionsLoaded={handleFilesProcessed}
         onLoadSample={handleLoadSample}
         onReset={hasData ? handleReset : undefined}
       />

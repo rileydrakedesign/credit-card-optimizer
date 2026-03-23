@@ -3,7 +3,10 @@
     { "keywords": ["payment thank you", "online payment", "automatic payment", "autopay", "bill pay"], "reason": "Credit card payment" },
     { "keywords": ["transfer", "zelle", "venmo", "cashapp", "cash app"], "reason": "Transfer" },
     { "keywords": ["cash advance", "cash withdrawal"], "reason": "Cash advance" },
-    { "keywords": ["atm withdrawal", "atm"], "reason": "ATM withdrawal" }
+    { "keywords": ["atm withdrawal", "atm"], "reason": "ATM withdrawal" },
+    { "keywords": ["deposit", "cd deposit"], "reason": "Deposit" },
+    { "keywords": ["interest earned", "interest paid", "intrst pymnt", "dividend"], "reason": "Interest/Dividend" },
+    { "keywords": ["overdraft", "nsf fee", "annual fee", "service charge", "monthly fee"], "reason": "Bank fee" }
   ],
   "category_rules": [
     { "category": "Groceries", "keywords": ["walmart", "target", "kroger", "safeway", "whole foods", "trader joe", "aldi", "costco", "publix", "heb", "wegmans", "grocery", "supermarket", "food lion", "stop & shop", "giant", "meijer", "sprouts", "market basket"] },
